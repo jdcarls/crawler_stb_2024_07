@@ -33,7 +33,7 @@ Please submit the result to a GitHub, GitLab, or Bitbucket repository and send u
 1. **Requests:** Fetching the web content including html, css, js etc. 
 2. **BeautifulSoup4:** Parsing HTML and Data extraction from the fetched website data.
 3. **Numpy/Pandas:** Using Pandas (built on top of Numpy) to transform data into a DataFrame.
-4. **lxml:** Improve html parsing with bs4
+
 
 **Installation: To install the dependencies, use "pip install -r requirements.txt" . This command should work for Linux/MacOS/Windows. Make sure to activate your virtual environment first. **
 
@@ -43,6 +43,9 @@ There are also a number of dependencies that are installed automatically as they
 by the top-level dependencies mentioned above: **certifi, chardet, urllib3, idna**
 
 
+## Architectural Decision Records
+
+Architecture decisions are documented in ........
 
 
 

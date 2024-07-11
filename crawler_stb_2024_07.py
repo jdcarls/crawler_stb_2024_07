@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup as Bs
 import requests
 import pandas as pd
-import re
 import datetime
 import uuid
 import time
@@ -39,7 +38,7 @@ def fetch_data():
             score_text = score_subline.get_text() if score_subline else '0 points'
             # we are looking for the href tag and in case it has changed, it will nevertheless be identified correctly
             matching_link = subtext.select('a[href*="item?id="]')
-            comments_subline = matching_link[0] if matching_link else None
+            comments_subline = matching_link[-1] if matching_link else None
             comments_text = comments_subline.get_text().strip() \
                 if comments_subline and 'comment' in comments_subline.get_text() else '0 comments'
         else:
@@ -81,9 +80,9 @@ def filter_data(data):
     df['comments'] = df['comments'].str.extract('(\d+)').astype(int)
 
     # Set up a new column in the data frame for word count as number of words is part of the filtering criteria
-    # We are applying the lambda function to the entries in the title column. The regular expression allows word count
-    # without punctuation
-    df['title_count_words'] = df['title'].apply(lambda x: len(re.findall(r'\b\w+\b', x)))
+    # We are applying the lambda function to the entries in the title column.
+    # The split() method treats anything between spaces as a single word.
+    df['title_count_words'] = df['title'].apply(lambda x: len(x.split()))
 
     # FILTERING 1: MORE THAN 5 WORDS IN TITLE SORTED BY COMMENTS
     filtered_by_comments_df = df[df['title_count_words'] > 5].sort_values(by='comments', ascending=False)
@@ -120,8 +119,14 @@ def filter_data(data):
     filtered_by_points_df['runtime'] = runtime
 
     # Saving df in to a csv file
-    filtered_by_comments_df('filtered_by_comments_df.csv', index=False)
-    filtered_by_points_df('filtered_by_points_df.csv', index=False)
+    filtered_by_comments_df.to_csv('filtered_by_comments_df.csv', index=False)
+    filtered_by_points_df.to_csv('filtered_by_points_df.csv', index=False)
+
+    # Combining the two dataframes
+    combined_df = pd.concat([filtered_by_comments_df, filtered_by_points_df])
+
+    # Saving the combined df to a csv file
+    combined_df.to_csv('combined_data.csv', index=False)
 
     # Returning the filtered df
     return filtered_by_comments_df, filtered_by_points_df

@@ -1,6 +1,6 @@
-# Web-Crawler Project 
+# Web-Crawler Project - Version 1.0
 
-## Task Instructions 
+## Objectives
 
 Using the language that you feel most proficient in, create a web crawler using scraping techniques to extract the first 30 entries from https://news.ycombinator.com/. You'll only care about the number, the title, the points, and the number of comments for each entry.
 
@@ -46,6 +46,25 @@ by the top-level dependencies mentioned above: **certifi, chardet, urllib3, idna
 ## Architectural Decision Records
 
 Architecture decisions are documented in ........
+
+
+## Crawler 
+The scraper accesses only https://news.ycombinator.com/ and therefore respects the disallowed pages:
+User-Agent: *
+Crawl-delay: 30
+Disallow: /collapse?
+Disallow: /context?
+Disallow: /flag?
+Disallow: /login
+Disallow: /logout
+Disallow: /r?
+Disallow: /reply?
+Disallow: /submitlink?
+Disallow: /vote?
+Disallow: /x?
+
+Note: These can be obtained through the robots.txt file of the website: https://news.ycombinator.com/robots.txt
+<br> <br> **Also, a time interval for scraping of at least 30 seconds should be maintained.**
 
 
 
